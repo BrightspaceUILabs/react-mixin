@@ -1,0 +1,17 @@
+{
+  "name": "lit-react-template",
+  "version": "1.0.0",
+  "description": "Use react elements in lit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "web-dev-server --node-resolve --app-index demo/index.html --open"
+  },
+  "author": "nightingale",
+  "license": "ISC",
+  "dependencies": {
+    "@web/dev-server": "^0.1.31",
+    "htm": "^3.1.1",
+    "lit": "^2.2.2"
+  }
+}
