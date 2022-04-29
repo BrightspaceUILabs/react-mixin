@@ -15,9 +15,8 @@ class EntryPoint extends LitElement {
         this.count = 5;
     }
 
-    handleChange() {
-        const that = this;
-        return (count) => that.count = count;
+    handleChange(e) {
+        this.count = e.detail;
     }
 
     handleClick() {
@@ -27,7 +26,7 @@ class EntryPoint extends LitElement {
 
     render() {
         return html`
-            <react-counter start="${this.startCount}" .onChange="${this.handleChange()}"></react-counter>
+            <react-counter start="${this.startCount}" @change="${this.handleChange}"></react-counter>
             <button @click="${this.handleClick}">Increment from Lit</button>
         `
     }

@@ -10,20 +10,32 @@ const fillIn = (obj, key, value) => {
 // We don't use update or render
 export const ReactElement = (s) =>
     class ReactWrapper extends s {
+
+        get props() {
+            const properties = Object.keys(this.constructor.properties);
+            return properties.reduce((obj, key) => fillIn(obj, key, this[key]), {})
+        }
+
+        get events() {
+            return Object.entries(this.constructor.callbacks);
+        }
+
         connectedCallback() {
             super.connectedCallback();
-            const reactElm = this.constructor.react;
-            const properties = Object.keys(this.constructor.properties);
-            const propsForElm = properties.reduce((obj, key) => fillIn(obj, key, this[key]), {})
             this.root = ReactDOM.createRoot(this.shadowRoot);
-
-            this.root.render(html`<${reactElm} ...${propsForElm}/> `);
         }
 
         render() {
             const reactElm = this.constructor.react;
-            const properties = Object.keys(this.constructor.properties);
-            const propsForElm = properties.reduce((obj, key) => fillIn(obj, key, this[key]), {})
-            this.root.render(html`<${reactElm} ...${propsForElm}/> `);
+            const props = this.props;
+            const events = this.events;
+            const that = this;
+            events.forEach(([key, value]) => {
+                props[key] = (detail) => {
+                    that.dispatchEvent(new CustomEvent(value.name, {detail}))
+                }
+            });
+            this.root.render(html`<${reactElm} ...${props}/> `);
+
         }
     }
