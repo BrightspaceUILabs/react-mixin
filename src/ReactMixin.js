@@ -31,7 +31,7 @@ export const ReactElement = (s) =>
             const events = this.events;
             const that = this;
             events.forEach(([key, value]) => {
-                props[key] = (detail) => {
+                props[key] = (...detail) => {
                     that.dispatchEvent(new CustomEvent(value.name, {detail}))
                 }
             });

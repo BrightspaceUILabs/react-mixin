@@ -16,7 +16,7 @@ class EntryPoint extends LitElement {
     }
 
     handleChange(e) {
-        this.count = e.detail;
+        this.count = e.detail[0];
     }
 
     handleClick() {

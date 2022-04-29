@@ -33,8 +33,41 @@ return html`
 `
 ```
 
+## Events
+
+The typical react pattern for passing data from a child to a parent is to use a callback. The parent passes the child a callback and the child uses that callback to pass data to the parent.
+
+In Lit you would instead have a function of the child dispatch an event that the parent can listen to to capture data from the child. 
+
+This mixin allows you to convert between these patterns by filling out the `callbacks` static getter.
+
+Example
+
+```javascript
+class ReactElement extends ReactMixin(LitElement) {
+    static get callbacks {
+        return {
+            onChange: { name: 'change' }
+        }
+    }
+}
+customElements.define('react-elm', ReactElement);
+
+
+class MyElement extends LitElement {
+
+    handleChange({detail}) {
+        // detail contains the data passed in by the react function
+        // e.g detail[0] is th first argument of the callback.
+    }
+
+    render() { 
+        return html`<react-elm @change=${this.handleChange}></react-em>`
+    }
+}
+```
+
 ## Notes
 
 We get to leverage lit elements attribute type casting which is great :)
-
-It would be nice to extend this so that you can define events that map to a callback given to the react element.
+We get to use common lit patterns like event data bindings.
