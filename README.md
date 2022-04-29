@@ -1,6 +1,6 @@
 # React Mixin
 
-A mixin that allows you to use react functional components with lit element.
+A mixin that allows you to use React components with lit element by wrapping them and mapping lit attributes to react properties.
 
 ## Example
 
@@ -13,12 +13,18 @@ class ReactCounter extends ReactElement(LitElement) {
         return {
             // example of an attribute
             start: {type: Number, attribute: true},
-            // example of a callback (React's standard way of passing data to a parent)
-            onChange: { attribute: false }
+        }
+    }
+    // convert a react callback to an event
+    // The object key is the name of the react property that contains the callback
+    // the name is the event that will be dispatched by the wrapper
+    static get callbacks() {
+        return {
+            onChange: { name: 'change' }
         }
     }
     static get react() {
-        // the react component in question
+        // the react component to be wrapped.
         return Counter
     }
 }
@@ -29,7 +35,7 @@ The above will let us call our counter like so:
 
 ```javascript
 return html`
-    <react-counter start="${this.start}" .onChange="${this.handleChange}"></react-counter>
+    <react-counter start="${this.start}" @change="${this.handleChange}"></react-counter>
 `
 ```
 
@@ -45,7 +51,7 @@ Example
 
 ```javascript
 class ReactElement extends ReactMixin(LitElement) {
-    static get callbacks {
+    static get callbacks() {
         return {
             onChange: { name: 'change' }
         }
